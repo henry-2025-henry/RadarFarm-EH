@@ -259,7 +259,7 @@ if not trySpawnPoliceCarUntilSuccess(5) then return end
 
 enterVehicle()
 task.wait(0.2)
-flyVehicleTo(Vector3.new(-1128.55, 5.89, 2799.94))
+flyVehicleTo(Vector3.new(-1171.00, 40.00, 2826.54))
 		task.wait(0.5)
 		exitVehicle()
 		task.wait(1)
