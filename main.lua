@@ -348,35 +348,53 @@ MainTab:CreateToggle({
 		antiAfkEnabled = state
 
 		if antiAfkEnabled then
-			game:GetService("StarterGui"):SetCore("SendNotification", {
-				Title = "Anti-AFK aktiviert",
-				Text = "Charakter bewegt sich leicht & springt regelmäßig.",
-				Duration = 4
-			})
+			showNotification("🟢 Anti-AFK aktiviert", 4)
 
 			antiAfkLoop = task.spawn(function()
+				local player = game.Players.LocalPlayer
+				local directions = {
+					Vector3.new(1, 0, 0),
+					Vector3.new(-1, 0, 0),
+					Vector3.new(0, 0, 1),
+					Vector3.new(0, 0, -1)
+				}
+
 				while antiAfkEnabled do
-					local player = game.Players.LocalPlayer
 					local char = player.Character or player.CharacterAdded:Wait()
 					local hrp = char:FindFirstChild("HumanoidRootPart")
 					local humanoid = char:FindFirstChildOfClass("Humanoid")
 
 					if hrp and humanoid then
-						hrp.CFrame = hrp.CFrame + hrp.CFrame.LookVector * 0.5
-						task.wait(0.1)
+						local action = math.random(1, 4)
 
-						humanoid.Jump = true
+						if action == 1 then
+							-- Vor und zurück laufen
+							local offset = hrp.CFrame.LookVector * 2
+							hrp.CFrame = hrp.CFrame + offset
+							task.wait(0.3)
+							hrp.CFrame = hrp.CFrame - offset
+						elseif action == 2 then
+							-- Springen
+							humanoid.Jump = true
+						elseif action == 3 then
+							-- Seitwärts bewegen
+							local dir = directions[math.random(1, #directions)]
+							hrp.CFrame = hrp.CFrame + dir * math.random(1, 3)
+						elseif action == 4 then
+							-- Kamera (Kopf) drehen – in Wahrheit: Körper drehen
+							local angle = math.rad(math.random(45, 180))
+							hrp.CFrame = hrp.CFrame * CFrame.Angles(0, angle, 0)
+						end
 					end
 
-					task.wait(60)
+					task.wait(math.random(20, 45)) -- alle 20–45 Sekunden Aktion
 				end
 			end)
 		else
-			game:GetService("StarterGui"):SetCore("SendNotification", {
-				Title = "Anti-AFK deaktiviert",
-				Text = "Kein AFK-Schutz mehr aktiv.",
-				Duration = 4
-			})
+			showNotification("🔴 Anti-AFK deaktiviert", 4)
+			if antiAfkLoop then
+				task.cancel(antiAfkLoop)
+			end
 		end
 	end
-}) 
+})
