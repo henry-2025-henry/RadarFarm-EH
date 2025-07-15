@@ -352,12 +352,21 @@ MainTab:CreateToggle({
 
 			antiAfkLoop = task.spawn(function()
 				local player = game.Players.LocalPlayer
-				local directions = {
-					Vector3.new(1, 0, 0),
-					Vector3.new(-1, 0, 0),
-					Vector3.new(0, 0, 1),
-					Vector3.new(0, 0, -1)
-				}
+				local userInputService = game:GetService("UserInputService")
+				local virtualInput = game:GetService("VirtualInputManager")
+
+				local function simulateInput()
+					-- Simuliere Tastenanschläge (WASD)
+					virtualInput:SendKeyEvent(true, Enum.KeyCode.W, false, game)
+					task.wait(0.3)
+					virtualInput:SendKeyEvent(false, Enum.KeyCode.W, false, game)
+
+					task.wait(0.2)
+
+					virtualInput:SendKeyEvent(true, Enum.KeyCode.S, false, game)
+					task.wait(0.3)
+					virtualInput:SendKeyEvent(false, Enum.KeyCode.S, false, game)
+				end
 
 				while antiAfkEnabled do
 					local char = player.Character or player.CharacterAdded:Wait()
@@ -365,29 +374,30 @@ MainTab:CreateToggle({
 					local humanoid = char:FindFirstChildOfClass("Humanoid")
 
 					if hrp and humanoid then
-						local action = math.random(1, 4)
+						-- Bewegung
+						local direction = math.random(1, 2) == 1 and 1 or -1
+						for i = 1, 3 do
+							hrp.CFrame = hrp.CFrame + hrp.CFrame.LookVector * direction * 1.5
+							task.wait(0.2)
+						end
 
-						if action == 1 then
-							-- Vor und zurück laufen
-							local offset = hrp.CFrame.LookVector * 2
-							hrp.CFrame = hrp.CFrame + offset
-							task.wait(0.3)
-							hrp.CFrame = hrp.CFrame - offset
-						elseif action == 2 then
-							-- Springen
-							humanoid.Jump = true
-						elseif action == 3 then
-							-- Seitwärts bewegen
-							local dir = directions[math.random(1, #directions)]
-							hrp.CFrame = hrp.CFrame + dir * math.random(1, 3)
-						elseif action == 4 then
-							-- Kamera (Kopf) drehen – in Wahrheit: Körper drehen
-							local angle = math.rad(math.random(45, 180))
+						-- Drehen
+						if math.random() < 0.4 then
+							local angle = math.rad(math.random(30, 90))
 							hrp.CFrame = hrp.CFrame * CFrame.Angles(0, angle, 0)
+						end
+
+						-- Sicherer Sprung
+						humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+						task.wait(0.1)
+
+						-- Zusätzliche Input-Simulation (W/S drücken)
+						if math.random() < 0.6 then
+							simulateInput()
 						end
 					end
 
-					task.wait(math.random(20, 45)) -- alle 20–45 Sekunden Aktion
+					task.wait(math.random(25, 45))
 				end
 			end)
 		else
