@@ -134,7 +134,7 @@ MainTab:CreateButton({
 			end
 
 			local startPos = root.Position
-			moveAxis(startPos.Y, startPos.Y + 100, function(y)
+			moveAxis(startPos.Y, startPos.Y + 10, function(y)
 				pivotCFrame(startPos.X, y, startPos.Z)
 			end)
 
@@ -145,7 +145,7 @@ MainTab:CreateButton({
 			end)
 
 			current = vehicle.PrimaryPart.Position
-			moveAxis(current.Y, target.Y + 20, function(y)
+			moveAxis(current.Y, target.Y + 3, function(y)
 				pivotCFrame(current.X, y, current.Z)
 			end)
 
