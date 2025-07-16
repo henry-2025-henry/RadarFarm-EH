@@ -100,7 +100,7 @@ MainTab:CreateButton({
 
 			local root = vehicle.PrimaryPart or vehicle:FindFirstChildWhichIsA("BasePart")
 			local target = position
-			local step = 5.8
+			local step = 4.5
 			local delayTime = 0.01
 
 			local function moveAxis(startVal, endVal, setter)
