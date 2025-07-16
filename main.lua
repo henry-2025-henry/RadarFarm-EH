@@ -134,7 +134,7 @@ MainTab:CreateButton({
 			end
 
 			local startPos = root.Position
-			moveAxis(startPos.Y, startPos.Y + 10, function(y)
+			moveAxis(startPos.Y, startPos.Y + 5, function(y)
 				pivotCFrame(startPos.X, y, startPos.Z)
 			end)
 
