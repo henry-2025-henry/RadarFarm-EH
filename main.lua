@@ -54,7 +54,7 @@ MainTab:CreateButton({
 		print("────────────────────────────")
 
 		local startPosition = Vector3.new(-1686.76, 5.88, 2755.92)
-		local maxDistance = 2000
+		local maxDistance = 5000
 
 		local distance = (hrp.Position - startPosition).Magnitude
 		if distance > maxDistance then
