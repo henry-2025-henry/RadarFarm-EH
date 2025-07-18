@@ -42,7 +42,7 @@ MainTab:CreateButton({
 				task.wait(5)
 				if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
 					local root = player.Character.HumanoidRootPart
-					root.CFrame = root.CFrame + root.CFrame.LookVector * 0.1
+					root.CFrame = root.CFrame + root.CFrame.LookVector * 0.000000000001
 				end
 			end
 		end)
