@@ -355,7 +355,7 @@ MainTab:CreateToggle({
 					local char = player.Character or player.CharacterAdded:Wait()
 					local humanoid = char:FindFirstChildOfClass("Humanoid")
 					if humanoid then
-						humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+						humanoid.Jump = true
 					end
 					task.wait(60)
 				end
