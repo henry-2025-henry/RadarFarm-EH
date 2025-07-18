@@ -348,60 +348,19 @@ MainTab:CreateToggle({
 		antiAfkEnabled = state
 
 		if antiAfkEnabled then
-			showNotification("🟢 Anti-AFK aktiviert", 4)
-
 			antiAfkLoop = task.spawn(function()
 				local player = game.Players.LocalPlayer
-				local userInputService = game:GetService("UserInputService")
-				local virtualInput = game:GetService("VirtualInputManager")
-
-				local function simulateInput()
-					-- Simuliere Tastenanschläge (WASD)
-					virtualInput:SendKeyEvent(true, Enum.KeyCode.W, false, game)
-					task.wait(0.3)
-					virtualInput:SendKeyEvent(false, Enum.KeyCode.W, false, game)
-
-					task.wait(0.2)
-
-					virtualInput:SendKeyEvent(true, Enum.KeyCode.S, false, game)
-					task.wait(0.3)
-					virtualInput:SendKeyEvent(false, Enum.KeyCode.S, false, game)
-				end
 
 				while antiAfkEnabled do
 					local char = player.Character or player.CharacterAdded:Wait()
-					local hrp = char:FindFirstChild("HumanoidRootPart")
 					local humanoid = char:FindFirstChildOfClass("Humanoid")
-
-					if hrp and humanoid then
-						-- Bewegung
-						local direction = math.random(1, 2) == 1 and 1 or -1
-						for i = 1, 3 do
-							hrp.CFrame = hrp.CFrame + hrp.CFrame.LookVector * direction * 1.5
-							task.wait(0.2)
-						end
-
-						-- Drehen
-						if math.random() < 0.4 then
-							local angle = math.rad(math.random(30, 90))
-							hrp.CFrame = hrp.CFrame * CFrame.Angles(0, angle, 0)
-						end
-
-						-- Sicherer Sprung
+					if humanoid then
 						humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-						task.wait(0.1)
-
-						-- Zusätzliche Input-Simulation (W/S drücken)
-						if math.random() < 0.6 then
-							simulateInput()
-						end
 					end
-
-					task.wait(math.random(25, 45))
+					task.wait(60)
 				end
 			end)
 		else
-			showNotification("🔴 Anti-AFK deaktiviert", 4)
 			if antiAfkLoop then
 				task.cancel(antiAfkLoop)
 			end
