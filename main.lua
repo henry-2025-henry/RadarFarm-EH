@@ -100,7 +100,7 @@ MainTab:CreateButton({
 
 			local root = vehicle.PrimaryPart or vehicle:FindFirstChildWhichIsA("BasePart")
 			local target = position
-			local step = 3
+			local step = 2
 			local delayTime = 0.01
 
 			local function moveAxis(startVal, endVal, setter)
@@ -134,7 +134,7 @@ MainTab:CreateButton({
 			end
 
 			local startPos = root.Position
-			moveAxis(startPos.Y, startPos.Y + 3.8, function(y)
+			moveAxis(startPos.Y, startPos.Y + 3, function(y)
 				pivotCFrame(startPos.X, y, startPos.Z)
 			end)
 
@@ -145,7 +145,7 @@ MainTab:CreateButton({
 			end)
 
 			current = vehicle.PrimaryPart.Position
-			moveAxis(current.Y, target.Y + 3, function(y)
+			moveAxis(current.Y, target.Y + 2, function(y)
 				pivotCFrame(current.X, y, current.Z)
 			end)
 
